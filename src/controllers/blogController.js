@@ -39,7 +39,7 @@ const updateBlog = async (req, res) => {
     if (!blogToUpdate) {
       return res.status(404).json({ message: "Blog not found" });
     }
-    // Checking if the user is authorized to delete the blog
+    // Checking if the user is authorized to update the blog
     if (blogToUpdate.user.toString() !== userId) {
       return res.status(403).json({
         status: "failed",

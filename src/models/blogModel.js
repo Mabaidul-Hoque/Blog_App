@@ -17,6 +17,6 @@ const blogSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 });
 
-const blogModel = mongoose.model("Blog", blogSchema);
+const blogModel = mongoose.model("blogs", blogSchema);
 
 module.exports = blogModel;
