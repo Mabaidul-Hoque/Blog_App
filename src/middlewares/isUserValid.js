@@ -11,7 +11,8 @@ const isUserValid = async (req, res, next) => {
       });
     }
 
-    const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+    const userInfo = jwt.verify(token, process.env.JWT_SECRET);
+    const { userId } = userInfo;
     req.userId = userId;
     next();
   } catch (error) {

@@ -21,9 +21,20 @@ const registerUser = async (req, res) => {
       password, // Password will be hashed in the pre-save hook
     };
     const user = await User.create(newUser);
+
+    // Generating JWT token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: 60 * 60,
+      }
+    );
+
     res.status(201).json({
       status: "Success",
       message: "User registered successfully",
+      token,
       user,
     });
   } catch (error) {
@@ -55,9 +66,13 @@ const loginUser = async (req, res) => {
     }
 
     // Generating JWT token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: 60 * 60,
-    });
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: 60 * 60,
+      }
+    );
 
     const userWithoutPassword = await User.findOne({ email }).select({
       password: 0,
