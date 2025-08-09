@@ -14,12 +14,32 @@ const swaggerOptions = {
     info: {
       title: "Blog App API",
       version: "1.0.0",
-      description: "A RESTful API for a blog application",
+      description:
+        "A RESTful API for a blog application with user authentication, blog posts, and comments",
+      contact: {
+        name: "API Support",
+        email: "support@blogapp.com",
+      },
     },
     servers: [
       {
         url: "http://localhost:4000",
         description: "Development server",
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "Enter your JWT token in the format: Bearer <token>",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
       },
     ],
   },
@@ -38,7 +58,14 @@ app.get("/", (req, res) => {
 });
 
 // Swagger documentation route
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, {
+    customCss: ".swagger-ui .topbar { display: none }",
+    customSiteTitle: "Blog App API Documentation",
+  })
+);
 
 app.use("/api/v1/blogApp/", router);
 
